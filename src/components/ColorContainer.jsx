@@ -1,10 +1,9 @@
 const colors = ["#ECEBDE", "#D3F1DF", "#EBEAFF", "#FEF3E2"];
 
-import { useContext } from "react";
-import { GlobalContext } from "../context/globalContext";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 function ColorContainer() {
-  const { changeColor } = useContext(GlobalContext);
+  const { changeColor } = useGlobalContext();
 
   return (
     <div className="align-elements mb-10 flex justify-end">

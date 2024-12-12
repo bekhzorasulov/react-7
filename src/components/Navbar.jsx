@@ -1,18 +1,11 @@
 import { Link } from "react-router";
 import NavbarLinks from "./NavbarLinks";
 
-import { useContext } from "react";
-import { GlobalContext } from "../context/globalContext";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 function Navbar() {
-  const { color, selectedProducts } = useContext(GlobalContext);
-  // const { products } = useLoaderData();
-
-  // const viewProduct = (e, prod) => {
-  //   e.preventDefault();
-  //   const product = selectedProducts.find((product) => prod.id == product.id);
-  //   if (product) dispatch({ type: "VIEW_PRODUCT", payload: prod });
-  // };
+  const { color, selectedProducts, totalAmount, totalPrice } =
+    useGlobalContext();
   return (
     <header className="bg-base-200 mb-5" style={{ backgroundColor: color }}>
       <div className="align-elements navbar">
@@ -64,7 +57,7 @@ function Navbar() {
                     />
                   </svg>
                   <span className="badge badge-sm indicator-item">
-                    {selectedProducts.length}
+                    {totalAmount}
                   </span>
                 </div>
               </div>
@@ -73,20 +66,13 @@ function Navbar() {
                 className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
               >
                 <div className="card-body">
-                  <span className="text-lg font-bold">Name</span>
-                  <span className="text-info">Price: $100</span>
-                  {/* {products.map((prod) => {
-                    return (
-                      <>
-                        <span className="text-lg font-bold">{prod.title}</span>
-                        <span className="text-info">Price: ${prod.price}</span>
-                      </>
-                    );
-                  })} */}
+                  <span className="text-lg font-bold">{totalAmount} Item</span>
+                  <span className="text-info">Price: {totalPrice}</span>
+
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block">
-                      View product
-                    </button>
+                    <Link to="/cart" className="btn btn-primary btn-block">
+                      View Cart
+                    </Link>
                   </div>
                 </div>
               </div>

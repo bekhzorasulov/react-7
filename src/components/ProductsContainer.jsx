@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { Link, useLoaderData } from "react-router";
-import { GlobalContext } from "../context/globalContext";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 import { toast } from "react-toastify";
 
 function ProductsContainer() {
-  const { dispatch, selectedProducts } = useContext(GlobalContext);
+  const { addProduct, selectedProducts } = useGlobalContext();
   const { products } = useLoaderData();
 
   const buyProduct = (e, prod) => {
@@ -14,7 +13,7 @@ function ProductsContainer() {
       toast.warn("❌Youuu body! You already have this product!❌");
       return;
     }
-    dispatch({ type: "ADD_PRODUCT", payload: prod });
+    addProduct({ ...prod, amount: 1 });
   };
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-10 mb-10">
