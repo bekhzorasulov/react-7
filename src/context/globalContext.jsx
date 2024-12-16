@@ -1,10 +1,16 @@
 import { createContext, useEffect, useReducer } from "react";
 import { formatPrice } from "../utils";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../fireBase/firebaseConfig";
 
 export const GlobalContext = createContext();
 const changeState = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case "LOGIN":
+      return { ...state, user: payload };
+    case "AUTH_READY":
+      return { ...state, authReady: true };
     case "ADD_PRODUCT":
       return {
         ...state,
@@ -33,10 +39,12 @@ const changeState = (state, action) => {
 
 export function GlobalContextProvider({ children }) {
   const [state, dispatch] = useReducer(changeState, {
+    user: null,
     color: "",
     selectedProducts: [],
     totalPrice: 0,
     totalAmount: 0,
+    authReady: false,
   });
 
   // calculate
@@ -94,6 +102,13 @@ export function GlobalContextProvider({ children }) {
       dispatch({ type: "CHANGE_AMOUNT", payload: changedProduct });
     }
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch({ type: "LOGIN", payload: user });
+      dispatch({ type: "AUTH_READY" });
+    });
+  }, []);
 
   useEffect(() => {
     calculate();
